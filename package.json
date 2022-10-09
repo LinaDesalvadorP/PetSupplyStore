@@ -4,7 +4,9 @@
   "description": "Tienda virtual de productos para mascotas",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node back/server.js",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon back/server",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon back/server"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,8 @@
     "i": "^0.3.7",
     "mongoose": "^6.6.5",
     "npm": "^8.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
