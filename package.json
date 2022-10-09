@@ -1,0 +1,26 @@
+{
+  "name": "petsupplystore",
+  "version": "1.0.0",
+  "description": "Tienda virtual de productos para mascotas",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LinaDesalvadorP/PetSupplyStore.git"
+  },
+  "author": "Lina Desalvador",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LinaDesalvadorP/PetSupplyStore/issues"
+  },
+  "homepage": "https://github.com/LinaDesalvadorP/PetSupplyStore#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "i": "^0.3.7",
+    "mongoose": "^6.6.5",
+    "npm": "^8.19.2"
+  }
+}
