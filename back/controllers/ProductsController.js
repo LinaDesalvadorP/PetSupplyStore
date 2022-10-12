@@ -1,11 +1,17 @@
 const product=require("../models/products")
+
 //Ver lista de productos
-exports.getProducts=(req,res,next)=>{
+exports.getProducts=async(req,res,next)=>{
+    const products=await product.find();
+
     res.status(200).json({
         success: true,
-        message: "Lista de productos"
+        count: products.length,
+        products
     })
 }
+
+//Buscar un producto
 
 //Crear nuevo producto /api/products
 exports.createProduct=async(req, res, next)=>{
