@@ -57,3 +57,21 @@ exports.createProduct=async(req, res, next)=>{
         newProduct
     })
 }
+
+
+//Eliminar producto
+exports.removeProduct= async (req,res,next)=>{
+    //Busca el producto
+    const productFound = await product.findById(req.params.id);
+    if(!productFound){
+        return res.status(404).json({
+            success:false,
+            message:"No se encontró el producto"
+        })
+    }
+    await productFound.remove();
+    res.status(200).json({
+        success: true,
+        message: "Producto eliminado correctamente."
+    })
+}
