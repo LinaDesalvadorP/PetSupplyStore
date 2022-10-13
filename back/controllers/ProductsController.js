@@ -96,4 +96,4 @@ function getProductByIdUsingFetch(id){
     .then(res=>console.log(res))
     .catch(err=>console.error(err))
 }
-getProductByIdUsingFetch('63460cbc037e05dd144269ff')
+//getProductByIdUsingFetch('63460cbc037e05dd144269ff')
