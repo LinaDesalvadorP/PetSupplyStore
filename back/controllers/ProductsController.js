@@ -1,4 +1,14 @@
 const product=require("../models/products")
+const fetch=(url)=>import('node-fetch').then(({default:fetch})=>fetch(url));
+
+//Crear nuevo producto /api/products
+exports.createProduct=async(req, res, next)=>{
+    const newProduct=await product.create(req.body);
+    res.status(201).json({
+        success:true,
+        newProduct
+    })
+}
 
 //Ver lista de productos
 exports.getProducts=async(req,res,next)=>{
@@ -49,16 +59,6 @@ exports.updateProduct= async (req,res,next)=>{
     })
 }
 
-//Crear nuevo producto /api/products
-exports.createProduct=async(req, res, next)=>{
-    const newProduct=await product.create(req.body);
-    res.status(201).json({
-        success:true,
-        newProduct
-    })
-}
-
-
 //Eliminar producto
 exports.removeProduct= async (req,res,next)=>{
     //Busca el producto
@@ -75,3 +75,25 @@ exports.removeProduct= async (req,res,next)=>{
         message: "Producto eliminado correctamente."
     })
 }
+
+/* Fetch: herramienta utilizada para hacer consultas,
+debe ser instalada con: npm i node-fetch y puede ser
+importado como se muestra en la línea 2"*/
+
+function getProductsUsingFetch(){
+    fetch('http://localhost:4000/api/products')
+    .then(res=>res.json())
+    .then(res=>console.log(res))
+    .catch(err=>console.error(err))
+}
+
+// Muestra en consola los productos
+//getProductsUsingFetch(); 
+
+function getProductByIdUsingFetch(id){
+    fetch('http://localhost:4000/api/products/'+id)
+    .then(res=>res.json())
+    .then(res=>console.log(res))
+    .catch(err=>console.error(err))
+}
+getProductByIdUsingFetch('63460cbc037e05dd144269ff')
