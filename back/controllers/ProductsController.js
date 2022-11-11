@@ -1,9 +1,9 @@
-const product=require("../models/products")
+const productM =require("../models/products")
 const fetch=(url)=>import('node-fetch').then(({default:fetch})=>fetch(url));
 
 //Crear nuevo producto /api/products
 exports.createProduct=async(req, res, next)=>{
-    const newProduct=await product.create(req.body);
+    const newProduct=await productM.create(req.body);
     res.status(201).json({
         success:true,
         newProduct
@@ -12,7 +12,14 @@ exports.createProduct=async(req, res, next)=>{
 
 //Ver lista de productos
 exports.getProducts=async(req,res,next)=>{
-    const products=await product.find();
+    const products=await productM.find();
+
+    if(!products){
+        return res.status(404).json({
+            success:false,
+            error: true,
+        })
+    }
 
     res.status(200).json({
         success: true,
@@ -23,16 +30,17 @@ exports.getProducts=async(req,res,next)=>{
 
 //Buscar un producto por id
 exports.getProductById=async(req,res,next)=>{
-    const productFound = await product.findById(req.params.id);
-    if(!productFound){
+    const product = await productM.findById(req.params.id);
+    if(!product){
         return res.status(404).json({
             success:false,
-            message:"No se encontró el producto"
+            message:"No se encontró el producto",
+            error: true 
         })
     }
     res.status(200).json({
         success:true,
-        productFound
+        product
     })
 }
 
@@ -40,7 +48,7 @@ exports.getProductById=async(req,res,next)=>{
 exports.updateProduct= async (req,res,next)=>{
     //Busca el producto
     //Se declara como un let porque la variable cambia
-    let productFound = await product.findById(req.params.id);
+    let productFound = await productM.findById(req.params.id);
     if(!productFound){
         return res.status(404).json({
             success:false,
@@ -48,7 +56,7 @@ exports.updateProduct= async (req,res,next)=>{
         })
     }
     //Toma los datos del body de la petición y los actualiza
-    productFound = await product.findByIdAndUpdate(req.params.id, req.body, {
+    productFound = await productM.findByIdAndUpdate(req.params.id, req.body, {
         new:true, //Valida sólo los atributos nuevos del req.body
         runValidators:true
     });
@@ -62,7 +70,7 @@ exports.updateProduct= async (req,res,next)=>{
 //Eliminar producto
 exports.removeProduct= async (req,res,next)=>{
     //Busca el producto
-    const productFound = await product.findById(req.params.id);
+    const productFound = await productM.findById(req.params.id);
     if(!productFound){
         return res.status(404).json({
             success:false,

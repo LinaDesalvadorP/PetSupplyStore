@@ -6,7 +6,7 @@ const Header = () => {
       <nav className="navbar row">
         <div className="col-12 col-md-3">
           <div className="navbar-brand">
-            <img src="./images/coala.png" alt="Coala Store Logo"></img>
+            <img src="../images/coala.png" alt="Coala Store Logo"></img>
           </div>
         </div>
 
@@ -15,12 +15,12 @@ const Header = () => {
             <input
               type="text"
               id="search_field"
-              class="form-control"
+              className="form-control"
               placeholder="Que producto busca?"
             ></input>
-            <div class="input-group-append">
-              <button id="search-btn" class="btn">
-                <i class="fa fa-search fa-2x text-white" aria-hidden="true"></i>
+            <div className="input-group-append">
+              <button id="search-btn" className="btn">
+                <i className="fa fa-search fa-2x text-white" aria-hidden="true"></i>
               </button>
             </div>
           </div>
