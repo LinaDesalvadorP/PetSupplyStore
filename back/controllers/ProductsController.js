@@ -1,17 +1,19 @@
-const productM =require("../models/products")
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const productM =require("../models/products");
+const ErrorHandler = require("../utils/errorHandler");
 const fetch=(url)=>import('node-fetch').then(({default:fetch})=>fetch(url));
 
 //Crear nuevo producto /api/products
-exports.createProduct=async(req, res, next)=>{
+exports.createProduct= catchAsyncErrors( async(req, res, next)=>{
     const newProduct=await productM.create(req.body);
     res.status(201).json({
         success:true,
         newProduct
     })
-}
+})
 
 //Ver lista de productos
-exports.getProducts=async(req,res,next)=>{
+exports.getProducts= catchAsyncErrors( async(req,res,next)=>{
     const products=await productM.find();
 
     if(!products){
@@ -26,26 +28,22 @@ exports.getProducts=async(req,res,next)=>{
         count: products.length,
         products
     })
-}
+})
 
 //Buscar un producto por id
-exports.getProductById=async(req,res,next)=>{
-    const product = await productM.findById(req.params.id);
+exports.getProductById= catchAsyncErrors( async(req,res,next)=>{
+    const product =  await productM.findById(req.params.id);
     if(!product){
-        return res.status(404).json({
-            success:false,
-            message:"No se encontró el producto",
-            error: true 
-        })
+        return next(new ErrorHandler("Product not found", 404))
     }
     res.status(200).json({
         success:true,
         product
     })
-}
+})
 
 //Actualizar producto 
-exports.updateProduct= async (req,res,next)=>{
+exports.updateProduct= catchAsyncErrors( async (req,res,next)=>{
     //Busca el producto
     //Se declara como un let porque la variable cambia
     let productFound = await productM.findById(req.params.id);
@@ -65,24 +63,21 @@ exports.updateProduct= async (req,res,next)=>{
         message: "El producto fue actualizado",
         productFound
     })
-}
+})
 
 //Eliminar producto
-exports.removeProduct= async (req,res,next)=>{
+exports.removeProduct=catchAsyncErrors( async (req,res,next)=>{
     //Busca el producto
     const productFound = await productM.findById(req.params.id);
     if(!productFound){
-        return res.status(404).json({
-            success:false,
-            message:"No se encontró el producto"
-        })
+        return next(new ErrorHandler("Product not found", 404))
     }
     await productFound.remove();
     res.status(200).json({
         success: true,
         message: "Producto eliminado correctamente."
     })
-}
+})
 
 /* Fetch: herramienta utilizada para hacer consultas,
 debe ser instalada con: npm i node-fetch y puede ser
