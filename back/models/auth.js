@@ -42,4 +42,11 @@ const userSchema= new mongoose.Schema({
     resetPasswordExpire: Date //Vencimiento del token generado para cambiar la contraseña
 })
 
+//Para encriptar la contraseña antes de guardarla
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        next()
+    }
+    this.password = await bcrypt.hash(this.password, 10) // 10 indica el nivel de encriptación, es su valor por defecto
+})
 module.exports = mongoose.model("auth", userSchema)
