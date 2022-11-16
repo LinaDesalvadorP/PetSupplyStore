@@ -23,3 +23,34 @@ exports.registerUser = catchAsyncErrors(async (req, res, next)=>{
         user
     })
 })
+
+// Login
+exports.loginUser = catchAsyncErrors(async(req, res, next)=>{
+    const {email, password} = req.body;
+
+    //Validación de campos vacios
+    if(!email || !password){
+        return next(new ErrorHandler("Please type email and password", 400))
+    }
+
+    //Buscar usuario en BD
+    const user = await User.findOne({email}).select("+password")
+    if(!user){
+        return next(new ErrorHandler("Email or password invalid", 401))
+    }
+
+    //validar contraseña
+    const passwordOK = await user.comparePassword(password)
+
+    if(!passwordOK){
+        return next(new ErrorHandler("Invalid password", 401))
+    }
+    
+    const token= user.getJwtToken();
+
+    res.status(201).json({
+        success: true, 
+        token,
+        user
+    })
+})

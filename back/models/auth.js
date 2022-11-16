@@ -51,10 +51,10 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, 10) // 10 indica el nivel de encriptación, es su valor por defecto
 })
 
-// //Decodificados contraseñas y comparamos
-// userSchema.methods.compararPass = async function (passDada){
-//     return await bcrypt.compare(passDada, this.password)
-// }
+//Decodificados contraseñas y comparamos
+userSchema.methods.comparePassword = async function (passwordIn){
+    return await bcrypt.compare(passwordIn, this.password)
+}
 
 //Retornar un JWT token
 userSchema.methods.getJwtToken = function () {
@@ -63,6 +63,5 @@ userSchema.methods.getJwtToken = function () {
         expiresIn: process.env.JWT_EXPIRATION_TIME //La unidad es el días
     })
 }
-
 
 module.exports = mongoose.model("auth", userSchema)
