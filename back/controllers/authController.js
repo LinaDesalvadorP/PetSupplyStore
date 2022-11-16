@@ -1,6 +1,7 @@
 const User = require("../models/auth")
 const ErrorHandler = require("../utils/errorHandler")
-const catchAsyncErrors = require("../middleware/catchAsyncErrors")
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const tokenSend = require("../utils/jwtToken");
 
 //Registrar un nuevo usuario -> route: api/user/register
 exports.registerUser = catchAsyncErrors(async (req, res, next)=>{
@@ -15,13 +16,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next)=>{
             url: "../images/avatar.png"
         }
     })
-    const token= user.getJwtToken();
-
-    res.status(201).json({
-        success: true, 
-        token,
-        user
-    })
+    tokenSend(user, 201, res)
 })
 
 // Login
@@ -45,12 +40,6 @@ exports.loginUser = catchAsyncErrors(async(req, res, next)=>{
     if(!passwordOK){
         return next(new ErrorHandler("Invalid password", 401))
     }
-    
-    const token= user.getJwtToken();
 
-    res.status(201).json({
-        success: true, 
-        token,
-        user
-    })
+    tokenSend(user, 200, res)
 })
