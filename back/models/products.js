@@ -81,6 +81,11 @@ const productsSchema=mongoose.Schema({
             }
         }
     ],
+    user:{
+        type: mongoose.Schema.ObjectId, //Indica que es la referencia a otro esquema
+        ref: 'User', //Debe ser igual al User de authController
+        required: true
+    }, 
     createdAt:{
         type:Date,
         default:Date.now
